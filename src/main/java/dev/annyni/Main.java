@@ -1,36 +1,30 @@
 package dev.annyni;
 
+import java.util.concurrent.BrokenBarrierException;
+import java.util.concurrent.CompletableFuture;
+
 public class Main {
     public static void main(String[] args) throws InterruptedException {
         Foo foo = new Foo();
 
-        Thread first = new Thread(() -> {
-            foo.first();
-        });
+        CompletableFuture.runAsync(foo::first);
 
-        Thread second = new Thread(() -> {
+        CompletableFuture.runAsync(() -> {
             try {
-                first.join();
-            } catch (InterruptedException e) {
+                foo.second();
+            } catch (BrokenBarrierException | InterruptedException e) {
                 throw new RuntimeException(e);
             }
-            foo.second();
         });
 
-        Thread third = new Thread(() -> {
+        CompletableFuture.runAsync(() -> {
             try {
-                second.join();
-            } catch (InterruptedException e) {
+                foo.third();
+            } catch (BrokenBarrierException | InterruptedException e) {
                 throw new RuntimeException(e);
             }
-            foo.third();
         });
 
-        third.start();
-        second.start();
-        first.start();
-        first.join();
-        second.join();
-        third.join();
+        Thread.sleep(2000);
     }
 }
