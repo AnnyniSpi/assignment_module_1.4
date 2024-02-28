@@ -1,16 +1,20 @@
 package dev.annyni;
 
+import java.util.concurrent.CompletableFuture;
+
 public class Foo {
 
-    public void first(){
+    public void first() {
         System.out.print("first");
+
     }
 
-    public void second(){
+    public void second() {
         System.out.print("second");
     }
 
-    public void third(){
+    public void third() {
         System.out.print("third");
+
     }
 }
